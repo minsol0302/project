@@ -1,0 +1,2 @@
+id= vdingadmin	
+pw= vms20260331

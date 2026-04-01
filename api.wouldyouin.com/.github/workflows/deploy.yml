@@ -1,0 +1,78 @@
+name: API 빌드 · Docker Hub · EC2 배포
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/vding-api
+  DOCKER_TAG: latest
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. 소스 체크아웃 ─────────────────────────────────────────────────
+      - name: 소스 체크아웃
+        uses: actions/checkout@v4
+
+      # ── 2. Docker Hub 로그인 ──────────────────────────────────────────────
+      - name: Docker Hub 로그인
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # ── 3. Docker 이미지 빌드 & 푸시 ─────────────────────────────────────
+      - name: Docker 이미지 빌드 및 푸시
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
+            ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+
+      # ── 4. EC2 SSH 접속 → 컨테이너 재배포 ───────────────────────────────
+      - name: EC2 배포 (SSH)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            echo "=== 최신 이미지 가져오기 ==="
+            docker pull ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
+
+            echo "=== 기존 컨테이너 정지 & 삭제 ==="
+            docker stop vding-api || true
+            docker rm vding-api || true
+
+            echo "=== 새 컨테이너 실행 ==="
+            docker run -d \
+              --name vding-api \
+              --restart always \
+              -p 8080:8080 \
+              -e NEON_DB_URL="${{ secrets.NEON_DB_UR }}" \
+              -e NEON_DB_USERNAME="${{ secrets.NEON_DB_USERNAME }}" \
+              -e NEON_DB_PASSWORD="${{ secrets.NEON_DB_PASSWORD }}" \
+              -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+              -e JWT_ALGORITHM="HS256" \
+              -e JWT_EXPIRE_DAYS="7" \
+              -e GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}" \
+              -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
+              -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+              -e AWS_REGION="${{ secrets.AWS_REGION }}" \
+              -e CORS_ORIGINS='["http://localhost:3000","https://www.wouldyouin.com","https://wouldyouin.com"]' \
+              ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
+
+            echo "=== 컨테이너 상태 확인 ==="
+            docker ps | grep vding-api
+
+            echo "=== 헬스체크 (10초 대기) ==="
+            sleep 10
+            curl -f http://localhost:8080/health || echo "헬스체크 실패 - 로그 확인 필요"

@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  color-scheme: light only;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* REMOVED: @media (prefers-color-scheme: dark) block
+   This was overriding text/background colors on mobile dark mode,
+   causing gray text (#ededed) on white background. */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Scrollbar hide utility (for Stories, highlights, etc.) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* scrollbar-none 유틸 (feed2 수평 스크롤 등에 사용) */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ═══════════════════════════════════════
+   VDING EDITOR — LIGHT THEME (default)
+   변수명이 기존 --background 등과 충돌하지 않음
+═══════════════════════════════════════ */
+:root,
+[data-theme="light"] {
+  --bg: #f4f4f5;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-hover: #fafafa;
+  --surface-active: #f0f0f0;
+  --surface-muted: #f7f7f8;
+  --border: #e4e4e7;
+  --border-light: #f0f0f2;
+  --ring: #18181b;
+
+  --text: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
+  --text-faint: #d4d4d8;
+
+  --accent: #18181b;
+  --accent-hover: #27272a;
+  --accent-text: #ffffff;
+  --accent-soft: rgba(24, 24, 27, 0.06);
+
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --warning: #ca8a04;
+  --warning-bg: #fefce8;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --info: #2563eb;
+  --info-bg: #eff6ff;
+
+  --tag-beauty: #f5f3ff;
+  --tag-beauty-text: #7c3aed;
+  --tag-fnb: #fff7ed;
+  --tag-fnb-text: #ea580c;
+  --tag-edu: #eff6ff;
+  --tag-edu-text: #2563eb;
+  --tag-realty: #f0fdf4;
+  --tag-realty-text: #16a34a;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.03);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+}
+
+/* ═══════════════════════════════════════
+   VDING EDITOR — DARK THEME
+   document.documentElement.setAttribute("data-theme","dark") 로 토글
+═══════════════════════════════════════ */
+[data-theme="dark"] {
+  --bg: #0a0a0a;
+  --bg-elevated: #141414;
+  --surface: #141414;
+  --surface-hover: #1c1c1c;
+  --surface-active: #242424;
+  --surface-muted: #111111;
+  --border: #262626;
+  --border-light: #1e1e1e;
+  --ring: #ffffff;
+
+  --text: #ececec;
+  --text-secondary: #a0a0a0;
+  --text-muted: #5c5c5c;
+  --text-faint: #333333;
+
+  --accent: #ffffff;
+  --accent-hover: #e0e0e0;
+  --accent-text: #0a0a0a;
+  --accent-soft: rgba(255, 255, 255, 0.06);
+
+  --success: #22c55e;
+  --success-bg: rgba(34, 197, 94, 0.1);
+  --warning: #eab308;
+  --warning-bg: rgba(234, 179, 8, 0.1);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.1);
+  --info: #3b82f6;
+  --info-bg: rgba(59, 130, 246, 0.1);
+
+  --tag-beauty: rgba(139, 92, 246, 0.12);
+  --tag-beauty-text: #a78bfa;
+  --tag-fnb: rgba(234, 88, 12, 0.12);
+  --tag-fnb-text: #fb923c;
+  --tag-edu: rgba(37, 99, 235, 0.12);
+  --tag-edu-text: #60a5fa;
+  --tag-realty: rgba(22, 163, 74, 0.12);
+  --tag-realty-text: #4ade80;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+  --shadow-card: 0 0 0 1px rgba(255,255,255,0.04), 0 1px 3px rgba(0,0,0,0.4);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+}
+
+/* ═══════════════════════════════════════
+   VDING EDITOR — ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes ve-fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ve-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up {
+  animation: ve-fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.animate-fade-in {
+  animation: ve-fadeIn 0.3s ease forwards;
+  opacity: 0;
+}
+
+/* stagger delays (vding_editor 전용) */
+.ve-delay-1, .delay-1 { animation-delay: 0.05s; }
+.ve-delay-2, .delay-2 { animation-delay: 0.10s; }
+.ve-delay-3, .delay-3 { animation-delay: 0.15s; }
+.ve-delay-4, .delay-4 { animation-delay: 0.20s; }
+.ve-delay-5, .delay-5 { animation-delay: 0.25s; }
+.ve-delay-6, .delay-6 { animation-delay: 0.30s; }
+
+/* vding_editor 스크롤바 스타일 */
+.ve-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+.ve-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.ve-scrollbar::-webkit-scrollbar-thumb { background: var(--text-faint); border-radius: 10px; }
+.ve-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }

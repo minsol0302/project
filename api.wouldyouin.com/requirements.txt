@@ -1,0 +1,29 @@
+# === Web Framework ===
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+
+# === Auth / DB ===
+asyncpg==0.30.0
+python-jose[cryptography]==3.3.0
+
+# === Utilities ===
+python-dotenv==1.0.1
+httpx==0.28.1
+python-multipart==0.0.20
+
+# === Gemini API ===
+google-genai==1.10.0
+
+# === AWS S3 ===
+boto3==1.37.0
+
+# === Image Processing ===
+Pillow==11.0.0
+
+# === 추후 추가 (CUDA + ML) ===
+# torch>=2.4.0
+# transformers>=4.43.1,<4.50.0
+# accelerate>=0.30.0
+# bitsandbytes>=0.43.0

@@ -1,0 +1,304 @@
+﻿< 추후 해야 할 것들 >
+
+핫앤올리 쿠키
+nginx 설치 > https 백엔드와 프론트엔드 프록시 설정
+
+
+
+
+< 규칙 >
+1. {도메인명}_{역할}.py 로 파일명을 지어줘. 서비스, 레포지토리, 디티오, 엔티티 파일 4가지로 꼭 구성해줘.
+
+2. charset을 utf-8만 사용해줘. 다른 건 절대 쓰지마.
+
+3. zustand store와 네온DB 테이블 구조 맞추기.
+
+4. 'api 폴더와 domain 폴더'의 구조를 일치시켜줘야되.
+
+5. api폴더는 gateway이고, 라우터만 만들어줘.
+
+6. dto, vo 같은 역할을 코딩할 때 빌더패턴을 쓸 수 있으면 빌더 패턴으로 써줘.
+
+7. Next.js 16.1.6에서는 params가 항상 Promise입니다. Next.js 15+에서는 Suspense로 감싸야 합니다. 
+
+12. 폴더마다 __init__.py가 무조건 있어야 되.
+
+13. GEMINI_MODELS = [
+    "gemini-3.1-flash-lite-preview",
+    "gemini-3.1-flash-image-preview",
+    "gemini-3.1-pro-preview",
+    "gemini-3-pro-image-preview",
+    "gemini-3-flash-preview",
+]
+
+
+
+< 백엔드 >
+
+프로젝트: api.viding.com (FastAPI REST API)
+설계 방식: REST API 방식(백엔드 HTTP 엔드포인트 설계 기반)
+배포: AWS ECS + API Gateway + Docker Hub + GitHub Actions
+ 
+
+venv: conda viding2 (Python 3.11)
+
+웹 프레임워크
+- Python 3.11
+- FastAPI 0.115.6
+- uvicorn 0.34.0 (ASGI 서버)
+- Pydantic 2.10.4 + pydantic-settings 2.7.1
+
+
+유틸
+- python-dotenv 1.0.1
+- httpx 0.28.1
+
+배포 / 인프라
+- Docker (python:3.11-slim 기반)
+- AWS ECS 
+
+
+
+
+< 프론트엔드 >
+
+배포 : 버셀
+도메인 주소 : www.wouldyouin.com
+
+프로젝트: ui.viding.com (한국 SNS Next.js 앱)
+
+프론트엔드 프레임워크
+- Next.js 16.1.6 (App Router, React 19 기반)
+- React 19.2.3
+- React DOM 19.2.3
+
+스타일링
+- Tailwind CSS 4.x (@tailwindcss/postcss 사용)
+- 글로벌 스타일: 모바일 우선, max-w-md 중심 레이아웃, 인스타그램형 피드/탭 구조
+
+상태 관리
+- Zustand 5.0.11 (피드/스토리/현재 사용자 전역 스토어)
+
+아이콘 / UI 유틸
+- lucide-react 0.576.0 (하단 네비게이션, 액션 아이콘 등)
+
+유틸리티 / 날짜
+- date-fns 4.1.0 (+ 한국어 locale ko) - "~전" 형태의 상대 시간 표기
+
+개발 도구
+- TypeScript 5.x
+- ESLint 9.x + eslint-config-next 16.1.6
+- @types/node 20.x, @types/react 19.x, @types/react-dom 19.x
+- Tailwind용 PostCSS 플러그인: @tailwindcss/postcss 4.x
+
+
+
+
+
+
+=======================================================
+< 새 PC / 새 환경에서 프로젝트 세팅 순서 >
+=======================================================
+
+-------------------------------------------------------
+[STEP 0] 사전 설치 확인
+-------------------------------------------------------
+아래 프로그램이 설치되어 있어야 합니다. 없으면 먼저 설치.
+
+  1. Git          -> https://git-scm.com/downloads
+  2. Anaconda     -> https://www.anaconda.com/download
+                    (conda 명령어가 PowerShell에서 실행돼야 함)
+  3. Node.js 20+  -> https://nodejs.org/en  (LTS 버전)
+  4. Docker Desktop (로컬에서 Docker 테스트 필요 시)
+                 -> https://www.docker.com/products/docker-desktop
+
+설치 확인 명령어 (PowerShell에서 실행):
+  git --version
+  conda --version
+  node --version
+  pnpm --version ( 버셀에 pnpm으로 되어있음)
+
+
+-------------------------------------------------------
+[STEP 1] 코드 클론 (Git Clone)
+-------------------------------------------------------
+
+
+-------------------------------------------------------
+[STEP 2] 백엔드 Python 환경 세팅
+-------------------------------------------------------
+(2-1) conda 가상환경 생성 및 활성화
+
+(2-2) 패키지 설치
+  cd C:\Users\hi\Documents\www.wouldyouin.com\api.wouldyouin.com
+  pip install -r requirements.txt
+
+(2-3) .env 파일 생성 (절대 git에 올리면 안됨)
+
+
+  .env 파일 내용 (아래 그대로 복사 후 실제 값 입력):
+  ----------------------------------------------------------
+  NEON_DB_URL=postgresql://유저명:비밀번호@호스트/DB명?sslmode=require
+  NEON_DB_USERNAME=유저명
+  NEON_DB_PASSWORD=비밀번호
+  JWT_SECRET=랜덤문자열(예:wouldyouin-secret-2026)
+  JWT_ALGORITHM=HS256
+  JWT_EXPIRE_DAYS=7
+  GEMINI_API_KEY=Gemini_API_KEY값
+  CORS_ORIGINS=["http://localhost:3000","https://www.wouldyouin.com","https://wouldyouin.com"]
+  ----------------------------------------------------------
+
+  ※ NEON_DB_URL 확인 위치: https://console.neon.tech
+      -> 프로젝트 선택 -> Connection string 복사
+  ※ GEMINI_API_KEY 발급: https://aistudio.google.com/app/apikey
+
+(2-4) 로컬 실행 확인
+  uvicorn main:app --reload --port 8080
+
+  브라우저에서 http://localhost:8080/health 접속
+  -> {"status":"ok"} 나오면 정상
+
+-------------------------------------------------------
+[STEP 3] 프론트엔드 Node.js 환경 세팅
+-------------------------------------------------------
+(3-1) 패키지 설치
+  cd C:\Users\hi\Documents\www.wouldyouin.com\ui.wouldyouin.com
+  npm install
+
+(3-2) .env.local 파일 생성 (로컬 개발용, git에 올리면 안됨)
+
+  .env.local 파일 내용:
+  ----------------------------------------------------------
+  API_URL=http://localhost:8080
+  NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api/v1
+  ----------------------------------------------------------
+
+  ※ 운영(배포) 환경은 Vercel 환경변수에서 별도 관리 (STEP 5 참고)
+
+(3-3) 로컬 실행 확인
+  pnpm run dev
+
+  브라우저에서 http://localhost:3000/ 접속 확인
+
+
+-------------------------------------------------------
+[STEP 4] GitHub Actions CI/CD 시크릿 등록
+         (백엔드 자동 배포 - git push 하면 EC2에 Docker로 배포됨)
+-------------------------------------------------------
+위치: https://github.com/000000000000000000000
+     -> Settings -> Secrets and variables -> Actions -> New repository secret
+
+
+
+
+등록해야 할 시크릿 목록 (이름 한 글자도 틀리면 안됨):
+
+  시크릿 이름          | 입력할 값
+  ---------------------------------------------------------------------------
+  DOCKERHUB_USERNAME  | Docker Hub 아이디 (예: jiminsong02)
+  DOCKERHUB_TOKEN     | Docker Hub Access Token
+                      | 발급: hub.docker.com -> Account Settings
+                      |       -> Security -> New Access Token
+  EC2_HOST            | EC2 퍼블릭 IPv4 주소 (예: 13.125.xxx.xxx)
+                      | 확인: AWS 콘솔 -> EC2 -> 인스턴스 -> 퍼블릭 IPv4 주소
+  EC2_USERNAME        | ubuntu  <- 이 값 그대로 입력
+  EC2_SSH_KEY         | .pem 파일 전체 내용
+                      | (-----BEGIN RSA PRIVATE KEY----- 첫 줄부터 마지막 줄까지 전부)
+  NEON_DB_UR          | Neon DB 연결 문자열 전체
+                      | ※ 주의: 이름이 NEON_DB_UR 임 (URL 아님, L 없음!)
+                      |   deploy.yml 60번째 줄에서 이 이름 그대로 사용 중
+  NEON_DB_USERNAME    | Neon DB 유저명
+  NEON_DB_PASSWORD    | Neon DB 비밀번호
+  JWT_SECRET          | JWT 시크릿 값 (백엔드 .env의 JWT_SECRET과 동일값)
+  GEMINI_API_KEY      | Gemini API Key
+  ---------------------------------------------------------------------------
+
+  ※ 시크릿 등록 완료 후, git push 하면 자동으로 EC2에 배포됨
+  ※ 수동 실행: GitHub -> Actions 탭 -> 워크플로우 선택 -> Run workflow 버튼
+
+
+
+-------------------------------------------------------
+[STEP 5] Vercel 프론트엔드 배포 환경변수 등록
+-------------------------------------------------------
+위치: https://vercel.com
+     -> 프로젝트(vding-ui-wouldyouin-com) -> Settings -> Environment Variables
+
+등록해야 할 환경변수:
+
+  변수 이름                    | 값
+  ---------------------------------------------------------------------------
+  API_URL                     | http://api.wouldyouin.com:8080
+  NEXT_PUBLIC_API_BASE_URL    | http://api.wouldyouin.com:8080/api/v1
+  ---------------------------------------------------------------------------
+
+  ※ 등록 후 Vercel에서 Redeploy 필요
+    Deployments 탭 -> 최신 항목 오른쪽 점 3개 버튼 -> Redeploy
+
+
+
+-------------------------------------------------------
+[STEP 6] DB 스키마 초기화 (테이블이 없을 때만 실행)
+-------------------------------------------------------
+새 Neon DB 사용 시 또는 테이블이 없을 때만 실행.
+반드시 EC2 Docker 컨테이너 안에서 실행해야 함 (로컬 아님).
+
+  (6-1) EC2 SSH 접속 (로컬 PowerShell에서 실행)
+    ssh -i "키파일이름.pem" ubuntu@EC2_퍼블릭IP
+
+  (6-2) 실행 중인 컨테이너 이름 확인
+    docker ps
+
+  (6-3) 컨테이너 내부에서 init_db.py 실행
+    docker exec -it vding-api python3 scripts/init_db.py
+
+  ※ "Table created" 또는 "already exists" 메시지 나오면 정상
+  ※ Neon DB 콘솔(https://console.neon.tech)에서 테이블 생성 확인 가능
+     -> Tables 탭 -> vding_users, vding_projects 테이블 보이면 OK
+
+
+
+-------------------------------------------------------
+[STEP 7] 가비아 DNS 설정 (도메인 연결)
+-------------------------------------------------------
+위치: https://www.gabia.com -> 로그인 -> My가비아 -> DNS 설정 -> wouldyouin.com
+
+  호스트명   | 타입  | 값
+  ----------------------------------------------------------
+  www        | CNAME | cname.vercel-dns.com.
+  api        | A     | EC2 퍼블릭 IPv4 주소 (숫자 IP)
+  ----------------------------------------------------------
+
+  ※ EC2 재시작 시 퍼블릭 IP가 변경될 수 있음
+    바뀌면 가비아 A레코드 IP 즉시 업데이트해야 함
+  ※ TTL은 기본값(600) 유지
+  ※ api.wouldyouin.com 은 Vercel에 추가하면 안됨 (EC2 전용)
+
+
+
+-------------------------------------------------------
+[STEP 8] 배포 후 정상 동작 확인 체크리스트
+-------------------------------------------------------
+  [ ] http://api.wouldyouin.com:8080/health -> {"status":"ok"}
+  [ ] https://www.wouldyouin.com/vding/main -> 메인 페이지 정상 로드
+  [ ] 로그인 -> /vding/main 으로 바로 이동 (feed 페이지 아님)
+  [ ] 아이디어 입력 -> 카테고리 선택 -> UI 테마 선택 -> 프리뷰 생성
+  [ ] 프리뷰 페이지에서 노란 경고창(Gemini 오류) 없이 AI 생성 데이터 표시
+  [ ] 프로필 페이지 번개 탭에 프로젝트 카드 표시됨
+
+
+
+-------------------------------------------------------
+[매일 작업 루틴 - 로컬 개발 시]
+-------------------------------------------------------
+  1. PowerShell 열기
+  2. conda activate viding2                          <- 백엔드 환경 활성화
+  3. cd api.wouldyouin.com 경로
+     uvicorn main:app --reload --port 8080           <- 백엔드 실행
+  4. 새 PowerShell 탭 열기
+  5. cd ui.wouldyouin.com 경로
+     pnpm run dev                                     <- 프론트 실행
+  6. 작업 완료 후 git push (자동 배포 트리거)
+     [백엔드] cd "C:\Users\hi\Documents\www.wouldyouin.com\api.wouldyouin.com"; git add .; git commit -m "메시지"; git push origin main
+     [프론트] cd "C:\Users\hi\Documents\www.wouldyouin.com\ui.wouldyouin.com"; git add .; git commit -m "메시지"; git push origin main
+

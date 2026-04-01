@@ -1,0 +1,10 @@
+{
+  "include": ["**/*.py"],
+  "exclude": ["**/__pycache__", ".venv", "venv"],
+  "venvPath": "C:/Users/hi/anaconda3/envs",
+  "venv": "viding2",
+  "pythonVersion": "3.11",
+  "reportMissingModuleSource": "none",
+  "reportMissingTypeStubs": false,
+  "typeCheckingMode": "basic"
+}

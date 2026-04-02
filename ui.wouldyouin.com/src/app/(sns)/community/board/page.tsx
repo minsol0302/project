@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { MessageSquare } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -141,9 +142,10 @@ export default function BoardPage() {
       ) : (
         <div className="divide-y divide-gray-100">
           {filtered.map((post) => (
-            <button
+            <Link
               key={post.id}
-              className="w-full text-left px-4 py-3 hover:bg-gray-50"
+              href={`/community/board/${encodeURIComponent(post.id)}`}
+              className="block w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors"
             >
               <p className="text-sm font-semibold mb-1">{post.title}</p>
               <div className="flex items-center gap-2 text-[11px] text-gray-500">
@@ -160,7 +162,7 @@ export default function BoardPage() {
                 <span>·</span>
                 <span>댓글 {post.replies}개</span>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       )}

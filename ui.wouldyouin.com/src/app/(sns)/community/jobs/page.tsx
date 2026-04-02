@@ -1,30 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Briefcase, MapPin } from "lucide-react";
-
-interface Job {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-  type: string;
-}
-
-const MOCK_JOBS: Job[] = [
-  { id: "job_1", title: "주니어 프론트엔드 개발자", company: "오르빗랩", location: "서울 성수", type: "정규직" },
-  { id: "job_2", title: "백엔드 개발자 (Node.js)", company: "넥스트웨이브", location: "판교", type: "정규직" },
-  { id: "job_3", title: "프로덕트 디자이너", company: "모션픽셀", location: "서울 을지로", type: "정규직" },
-  { id: "job_4", title: "데이터 분석가", company: "인사이트허브", location: "원격", type: "계약직" },
-  { id: "job_5", title: "콘텐츠 마케터", company: "브랜드스케일", location: "서울 강남", type: "정규직" },
-  { id: "job_6", title: "QA 엔지니어", company: "테스트포지", location: "부산", type: "정규직" },
-  { id: "job_7", title: "모바일 앱 개발자 (Flutter)", company: "앱브릿지", location: "대전", type: "정규직" },
-  { id: "job_8", title: "사업개발 매니저", company: "비즈플로우", location: "서울 여의도", type: "정규직" },
-  { id: "job_9", title: "AI 엔지니어", company: "딥노트", location: "판교", type: "정규직" },
-  { id: "job_10", title: "서비스 기획자", company: "프로덕트웍스", location: "서울 홍대", type: "정규직" },
-  { id: "job_11", title: "인사 운영 매니저", company: "피플앤컬처", location: "서울 시청", type: "계약직" },
-  { id: "job_12", title: "브랜드 영상 PD", company: "크리에이티브독", location: "서울 합정", type: "인턴" },
-];
+import { MOCK_JOBS, type Job } from "./job-data";
 
 function sanitizeText(value: string): string {
   return value.replace(/dummy[_\s]*/gi, "").replace(/\s{2,}/g, " ").trim();
@@ -136,27 +115,28 @@ export default function JobsPage() {
         </div>
       ) : (
         jobs.map((job) => (
-          <button
+          <Link
             key={job.id}
-            className="w-full flex items-center justify-between px-3 py-3 rounded-lg border border-gray-200 hover:bg-gray-50"
+            href={`/community/jobs/${encodeURIComponent(job.id)}`}
+            className="w-full flex items-center justify-between px-3 py-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                 <Briefcase className="w-5 h-5 text-gray-500" />
               </div>
-              <div className="text-left">
+              <div className="text-left min-w-0">
                 <p className="text-sm font-semibold">{job.title}</p>
                 <p className="text-xs text-gray-500">{job.company}</p>
                 <div className="flex items-center gap-1 text-[11px] text-gray-500 mt-1">
-                  <MapPin className="w-3 h-3" />
+                  <MapPin className="w-3 h-3 shrink-0" />
                   <span>{job.location}</span>
                   <span className="mx-1">·</span>
                   <span>{job.type}</span>
                 </div>
               </div>
             </div>
-            <span className="text-xs font-semibold text-blue-500">지원하기</span>
-          </button>
+            <span className="text-xs font-semibold text-blue-500 shrink-0">지원하기</span>
+          </Link>
         ))
       )}
 

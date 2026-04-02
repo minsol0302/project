@@ -1,31 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { CalendarDays, Award } from "lucide-react";
-
-interface Contest {
-  id: string;
-  title: string;
-  host: string;
-  dday: string;
-  prize: string;
-  tags: string[];
-}
-
-const MOCK_CONTESTS: Contest[] = [
-  { id: "contest_1", title: "청년 사회문제 해결 아이디어톤", host: "서울창업허브", dday: "D-6", prize: "대상 700만원", tags: ["아이디어", "사회혁신"] },
-  { id: "contest_2", title: "2026 데이터 시각화 챌린지", host: "데이터얼라이언스", dday: "D-9", prize: "총상금 1,200만원", tags: ["데이터", "시각화"] },
-  { id: "contest_3", title: "UX 리서치 실전 공모전", host: "UX랩 코리아", dday: "D-12", prize: "최우수상 400만원", tags: ["UX", "리서치"] },
-  { id: "contest_4", title: "지속가능 도시 서비스 해커톤", host: "그린시티포럼", dday: "D-14", prize: "대상 600만원", tags: ["환경", "서비스"] },
-  { id: "contest_5", title: "핀테크 앱 리디자인 콘테스트", host: "핀랩", dday: "D-17", prize: "우수상 300만원", tags: ["핀테크", "디자인"] },
-  { id: "contest_6", title: "로컬 커머스 성장 전략 공모전", host: "리테일인사이트", dday: "D-18", prize: "총상금 900만원", tags: ["커머스", "전략"] },
-  { id: "contest_7", title: "AI 기반 학습도구 기획전", host: "에듀테크협회", dday: "D-20", prize: "대상 500만원", tags: ["AI", "에듀테크"] },
-  { id: "contest_8", title: "공공데이터 활용 서비스 기획", host: "공공데이터재단", dday: "D-22", prize: "최우수상 350만원", tags: ["공공데이터", "기획"] },
-  { id: "contest_9", title: "문화예술 플랫폼 신규 기능 제안전", host: "아트브릿지", dday: "D-24", prize: "우수상 250만원", tags: ["플랫폼", "문화예술"] },
-  { id: "contest_10", title: "헬스케어 사용자 경험 개선 챌린지", host: "메디UX", dday: "D-25", prize: "대상 450만원", tags: ["헬스케어", "UX"] },
-  { id: "contest_11", title: "모빌리티 서비스 혁신 아이디어 공모", host: "모빌코리아", dday: "D-27", prize: "총상금 800만원", tags: ["모빌리티", "혁신"] },
-  { id: "contest_12", title: "스마트오피스 생산성 앱 기획전", host: "워크플로우랩", dday: "D-28", prize: "장려상 200만원", tags: ["생산성", "B2B"] },
-];
+import { MOCK_CONTESTS, type Contest } from "./contest-data";
 
 function sanitizeText(value: string): string {
   return value.replace(/dummy[_\s]*/gi, "").replace(/\s{2,}/g, " ").trim();
@@ -141,9 +119,10 @@ export default function ContestsPage() {
         </div>
       ) : (
         contests.map((contest) => (
-          <button
+          <Link
             key={contest.id}
-            className="w-full text-left rounded-xl border border-gray-200 p-4 hover:bg-gray-50"
+            href={`/community/contests/${encodeURIComponent(contest.id)}`}
+            className="block w-full text-left rounded-xl border border-gray-200 p-4 hover:bg-gray-50 transition-colors"
           >
             <div className="flex items-start justify-between gap-2 mb-2">
               <div>
@@ -170,7 +149,7 @@ export default function ContestsPage() {
                 ))}
               </div>
             </div>
-          </button>
+          </Link>
         ))
       )}
 

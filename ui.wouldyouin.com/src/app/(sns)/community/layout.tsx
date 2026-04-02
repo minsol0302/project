@@ -8,7 +8,6 @@ const tabs = [
   { href: "/community/jobs", label: "기업 채용" },
   { href: "/community/board", label: "게시판" },
   { href: "/community/study", label: "스터디 모임" },
-  { href: "/community/connect", label: "소통" },
 ];
 
 export default function CommunityLayout({
@@ -24,7 +23,7 @@ export default function CommunityLayout({
       <div className="sticky top-0 bg-white px-4 py-3 border-b border-gray-200 z-20">
         <h2 className="text-lg font-semibold">커뮤니티</h2>
         <p className="text-xs text-gray-500 mt-1">
-          공모전 · 채용 · 게시판 · 스터디 · 브랜드 소통까지 한 번에 모아보기
+          공모전 · 채용 · 게시판 · 스터디까지 한 번에 모아보기
         </p>
       </div>
 
@@ -32,7 +31,9 @@ export default function CommunityLayout({
       <div className="sticky top-[3.25rem] bg-white border-b border-gray-200 z-10">
         <div className="flex overflow-x-auto scrollbar-hide px-2">
           {tabs.map((tab) => {
-            const active = pathname === tab.href;
+            const active =
+              pathname === tab.href ||
+              (tab.href !== "/" && pathname.startsWith(`${tab.href}/`));
             return (
               <Link
                 key={tab.href}

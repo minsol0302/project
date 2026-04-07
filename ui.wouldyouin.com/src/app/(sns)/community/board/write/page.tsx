@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { BOARD_LOCAL_AUTHOR_NAME } from "../board-data";
 
 const BOARD_DRAFTS_KEY = "vding_board_posts";
 
@@ -28,7 +29,7 @@ export default function BoardWritePage() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("vdingadmin");
+  const [author, setAuthor] = useState(BOARD_LOCAL_AUTHOR_NAME);
 
   const isDisabled = !title.trim() || !content.trim() || !author.trim();
 

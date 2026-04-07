@@ -128,3 +128,6 @@ export function getBoardPostDetail(id: string): BoardPostDetail | undefined {
 }
 
 export const BOARD_EXTRA_COMMENTS_KEY_PREFIX = "vding_board_extra_comments_";
+
+/** 로컬 게시글·댓글 작성자 표시명 (글쓰기 기본값과 동일). */
+export const BOARD_LOCAL_AUTHOR_NAME = "vdingadmin";

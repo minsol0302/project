@@ -9,6 +9,7 @@ import { ko } from "date-fns/locale";
 import {
   getBoardPostDetail,
   BOARD_EXTRA_COMMENTS_KEY_PREFIX,
+  BOARD_LOCAL_AUTHOR_NAME,
   type BoardComment,
 } from "../board-data";
 
@@ -58,7 +59,7 @@ export default function BoardPostDetailPage() {
 
     const next: BoardComment = {
       id: `local_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
-      author: "익명",
+      author: BOARD_LOCAL_AUTHOR_NAME,
       body: text,
       created_at: new Date().toISOString(),
     };
